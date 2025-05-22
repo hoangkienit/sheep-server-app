@@ -4,20 +4,29 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot({ isGlobal: true }), // load .env globally
-    // MongooseModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     uri: configService.get<string>('MONGODB_URI'),
-    //   }),
-    //   inject: [ConfigService],
-    // }),
+    ConfigModule.forRoot({ isGlobal: true }), // load .env globally
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get("DB_HOST"),
+        port: +configService.get("DB_PORT"),
+        username: configService.get("DB_USERNAME"),
+        password: configService.get("DB_PASSWORD"),
+        database: configService.get("DB_NAME"),
+        entities: [join(process.cwd(), 'dist/**/*.entity.js')],
+        synchronize: true // do not use this = true in production
+      })
+    }),
     AuthModule,
-    UserModule],
+    UserModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
