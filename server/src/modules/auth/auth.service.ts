@@ -15,10 +15,19 @@ const fakeUser = [
 ]
 @Injectable()
 export class AuthService {
-    login({ username, password }: LoginPayloadDto) {
-        const findUser = fakeUser.find(us => us.username === username);
-        if (!findUser) return null;
+    login(loginPayload: LoginPayloadDto) {
+        const user = fakeUser.find((user) => user.username === loginPayload.username);
+        if (!user) {
+            return {
+                message: "Login failed"
+            }
+        }
 
+        if (loginPayload.password !== user.password) {
+            return {
+                message: "Wrong password"
+            }
+        }
         return {
             message: "Login successful"
         }
