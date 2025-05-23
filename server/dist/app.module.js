@@ -12,12 +12,31 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./modules/auth/auth.module");
 const user_module_1 = require("./modules/user/user.module");
+const config_1 = require("@nestjs/config");
+const typeorm_1 = require("@nestjs/typeorm");
+const path_1 = require("path");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    type: 'postgres',
+                    host: configService.get("DB_HOST"),
+                    port: +configService.get("DB_PORT"),
+                    username: configService.get("DB_USERNAME"),
+                    password: configService.get("DB_PASSWORD"),
+                    database: configService.get("DB_NAME"),
+                    entities: [(0, path_1.join)(process.cwd(), 'dist/**/*.entity.js')],
+                    synchronize: true,
+                    logging: true
+                })
+            }),
             auth_module_1.AuthModule,
             user_module_1.UserModule
         ],

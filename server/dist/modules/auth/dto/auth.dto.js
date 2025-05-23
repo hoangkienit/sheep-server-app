@@ -11,6 +11,8 @@ class RegisterPayloadDto {
     username;
     email;
     password;
+    phone;
+    address;
 }
 exports.RegisterPayloadDto = RegisterPayloadDto;
 //# sourceMappingURL=auth.dto.js.map

@@ -21,7 +21,8 @@ import { join } from 'path';
         password: configService.get("DB_PASSWORD"),
         database: configService.get("DB_NAME"),
         entities: [join(process.cwd(), 'dist/**/*.entity.js')],
-        synchronize: true // do not use this = true in production
+        synchronize: true, // do not use this = true in production,
+        logging: true
       })
     }),
     AuthModule,

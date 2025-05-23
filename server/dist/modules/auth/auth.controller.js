@@ -25,10 +25,22 @@ let AuthController = class AuthController {
         console.log(id);
         return `This action returns a #${id} cat`;
     }
-    login(loginPayload) {
-        return this.authService.login(loginPayload);
+    async login(loginPayload) {
+        const response = await this.authService.login(loginPayload);
+        return {
+            success: true,
+            message: response.message,
+            data: {
+                user: response.user
+            }
+        };
     }
-    register() {
+    async register(registerPayload) {
+        const response = await this.authService.register(registerPayload);
+        return {
+            success: true,
+            message: response.message
+        };
     }
 };
 exports.AuthController = AuthController;
@@ -41,16 +53,18 @@ __decorate([
 ], AuthController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)('login'),
+    (0, common_1.HttpCode)(200),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [auth_dto_1.LoginPayloadDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('register'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [auth_dto_1.RegisterPayloadDto]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),

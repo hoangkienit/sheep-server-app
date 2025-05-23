@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { LoginPayloadDto } from './dto/auth.dto';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { LoginPayloadDto, RegisterPayloadDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -15,12 +15,25 @@ export class AuthController {
     }
 
     @Post('login')
-    login(@Body() loginPayload: LoginPayloadDto) {
-        return this.authService.login(loginPayload);
+    @HttpCode(200)
+    async login(@Body() loginPayload: LoginPayloadDto) {
+        const response = await this.authService.login(loginPayload);
+        return {
+            success: true,
+            message: response.message,
+            data: {
+                user: response.user
+            }
+        }
     }
 
     @Post('register')
-    register() {
+    async register(@Body() registerPayload: RegisterPayloadDto) {
+        const response = await this.authService.register(registerPayload);
 
+        return {
+            success: true,
+            message: response.message
+        }
     }
 }

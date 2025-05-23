@@ -14,6 +14,15 @@ export class User {
     @Column({ unique: true })
     phone: string;
 
+    @Column({ unique: true })
+    email: string;
+
     @Column({ type: 'boolean', default: true})
     isActive: boolean;
+
+    @Column({ type: 'text'})
+    password: string;
+
+    @Column({ type: 'text', array: true })
+    address: string[];
 }
