@@ -37,7 +37,7 @@ export class AuthService {
             password,
             address
         } = registerPayload;
-
+        
         return {
             message: "Register success"
         }

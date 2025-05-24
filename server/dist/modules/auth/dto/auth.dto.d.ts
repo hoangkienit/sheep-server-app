@@ -8,5 +8,5 @@ export declare class RegisterPayloadDto {
     email: string;
     password: string;
     phone: string;
-    address: string[];
+    address?: string[];
 }
