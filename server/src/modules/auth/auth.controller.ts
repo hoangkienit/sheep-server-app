@@ -19,20 +19,17 @@ export class AuthController {
     async login(@Body() loginPayload: LoginPayloadDto) {
         const response = await this.authService.login(loginPayload);
         return {
-            success: true,
             message: response.message,
-            data: {
-                user: response.user
-            }
+            user: response.user
         }
     }
 
     @Post('register')
+    @HttpCode(201)
     async register(@Body() registerPayload: RegisterPayloadDto) {
         const response = await this.authService.register(registerPayload);
 
         return {
-            success: true,
             message: response.message
         }
     }

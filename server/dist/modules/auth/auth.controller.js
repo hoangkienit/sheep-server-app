@@ -28,17 +28,13 @@ let AuthController = class AuthController {
     async login(loginPayload) {
         const response = await this.authService.login(loginPayload);
         return {
-            success: true,
             message: response.message,
-            data: {
-                user: response.user
-            }
+            user: response.user
         };
     }
     async register(registerPayload) {
         const response = await this.authService.register(registerPayload);
         return {
-            success: true,
             message: response.message
         };
     }
@@ -61,6 +57,7 @@ __decorate([
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('register'),
+    (0, common_1.HttpCode)(201),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [auth_dto_1.RegisterPayloadDto]),
