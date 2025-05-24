@@ -17,28 +17,51 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./../user/entities/user.entity");
 const typeorm_2 = require("@nestjs/typeorm");
+const bcrypt = require("bcrypt");
 let AuthService = class AuthService {
     userRepository;
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async login(loginPayload) {
+        const { username, password } = loginPayload;
         const user = await this.userRepository.findOne({
-            where: { username: loginPayload.username }
+            where: { username: username }
         });
         if (!user) {
-            throw new common_1.NotFoundException("User not found");
+            throw new common_1.NotFoundException("Invalid credentials");
         }
-        if (user.password !== loginPayload.password) {
-            throw new common_1.BadRequestException("Wrong password");
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new common_1.UnauthorizedException('Invalid credentials');
         }
+        const { password: _, ...userWithoutPassword } = user;
         return {
             message: "Login successful",
-            user: user
+            user: userWithoutPassword
         };
     }
     async register(registerPayload) {
         const { fullName, username, email, phone, password, address } = registerPayload;
+        if (await this.findByUsername(username)) {
+            throw new common_1.BadRequestException('Username already exists');
+        }
+        if (await this.findByEmail(email)) {
+            throw new common_1.BadRequestException('Email already exists');
+        }
+        if (await this.findByPhone(phone)) {
+            throw new common_1.BadRequestException('Phone already exists');
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = this.userRepository.create({
+            fullName: fullName,
+            username: username,
+            phone: phone,
+            email: email,
+            password: hashedPassword,
+            address: address
+        });
+        await this.userRepository.save(newUser);
         return {
             message: "Register success"
         };

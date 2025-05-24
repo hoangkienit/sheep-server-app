@@ -5,14 +5,18 @@ export declare class AuthController {
     constructor(authService: AuthService);
     findOne(id: string): string;
     login(loginPayload: LoginPayloadDto): Promise<{
-        success: boolean;
         message: string;
-        data: {
-            user: import("../user/entities/user.entity").User;
+        user: {
+            id: number;
+            fullName: string;
+            username: string;
+            phone: string;
+            email: string;
+            isActive: boolean;
+            address: string[];
         };
     }>;
     register(registerPayload: RegisterPayloadDto): Promise<{
-        success: boolean;
         message: string;
     }>;
 }

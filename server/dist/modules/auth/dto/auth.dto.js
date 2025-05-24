@@ -16,6 +16,19 @@ class LoginPayloadDto {
     password;
 }
 exports.LoginPayloadDto = LoginPayloadDto;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Matches)(/\S/, { message: 'Username must not be empty or whitespace' }),
+    __metadata("design:type", String)
+], LoginPayloadDto.prototype, "username", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(6, { message: "Password must at least 6 characters" }),
+    (0, class_validator_1.MaxLength)(20, { message: "Password must max length is 20 characters" }),
+    __metadata("design:type", String)
+], LoginPayloadDto.prototype, "password", void 0);
 class RegisterPayloadDto {
     fullName;
     username;
@@ -28,11 +41,13 @@ exports.RegisterPayloadDto = RegisterPayloadDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Matches)(/\S/, { message: 'Full name must not be empty or whitespace' }),
     __metadata("design:type", String)
 ], RegisterPayloadDto.prototype, "fullName", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Matches)(/\S/, { message: 'Username must not be empty or whitespace' }),
     __metadata("design:type", String)
 ], RegisterPayloadDto.prototype, "username", void 0);
 __decorate([
@@ -43,12 +58,14 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(6),
+    (0, class_validator_1.MaxLength)(20),
     __metadata("design:type", String)
 ], RegisterPayloadDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(10),
+    (0, class_validator_1.MaxLength)(10),
     __metadata("design:type", String)
 ], RegisterPayloadDto.prototype, "phone", void 0);
 __decorate([

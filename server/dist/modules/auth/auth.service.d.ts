@@ -6,7 +6,15 @@ export declare class AuthService {
     constructor(userRepository: Repository<User>);
     login(loginPayload: LoginPayloadDto): Promise<{
         message: string;
-        user: User;
+        user: {
+            id: number;
+            fullName: string;
+            username: string;
+            phone: string;
+            email: string;
+            isActive: boolean;
+            address: string[];
+        };
     }>;
     register(registerPayload: RegisterPayloadDto): Promise<{
         message: string;
