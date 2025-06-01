@@ -1,12 +1,13 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { LoginPayloadDto, RegisterPayloadDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
+import { access } from 'fs';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) {
-
-    }
+    constructor(
+        private authService: AuthService
+    ) { }
 
     @Get(':id')
     findOne(@Param('id') id: string): string {
@@ -20,7 +21,9 @@ export class AuthController {
         const response = await this.authService.login(loginPayload);
         return {
             message: response.message,
-            user: response.user
+            user: response.user,
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken
         }
     }
 

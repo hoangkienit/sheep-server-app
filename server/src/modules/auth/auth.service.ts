@@ -4,12 +4,16 @@ import { Repository } from 'typeorm';
 import { User } from './../user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private configService: ConfigService,
+        private jwtService: JwtService
     ) { }
     async login(loginPayload: LoginPayloadDto) {
         const { username, password } = loginPayload;
@@ -27,10 +31,24 @@ export class AuthService {
         }
          // Destructure and exclude password
         const { password: _, ...userWithoutPassword } = user;
+
+        const payload = { userId: user.id, username: user.username };
+
+        const accessToken = this.jwtService.sign(payload, {
+            secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+            expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRES_IN')
+        });
+
+        const refreshToken = this.jwtService.sign(payload, {
+            secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+            expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')
+        });
         
         return {
             message: "Login successful",
-            user: userWithoutPassword
+            user: userWithoutPassword,
+            accessToken: accessToken,
+            refreshToken: refreshToken
         }
     }
 

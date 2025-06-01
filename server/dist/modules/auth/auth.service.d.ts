@@ -1,9 +1,13 @@
 import { LoginPayloadDto, RegisterPayloadDto } from './dto/auth.dto';
 import { Repository } from 'typeorm';
 import { User } from './../user/entities/user.entity';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 export declare class AuthService {
     private readonly userRepository;
-    constructor(userRepository: Repository<User>);
+    private configService;
+    private jwtService;
+    constructor(userRepository: Repository<User>, configService: ConfigService, jwtService: JwtService);
     login(loginPayload: LoginPayloadDto): Promise<{
         message: string;
         user: {
@@ -15,6 +19,8 @@ export declare class AuthService {
             isActive: boolean;
             address: string[];
         };
+        accessToken: string;
+        refreshToken: string;
     }>;
     register(registerPayload: RegisterPayloadDto): Promise<{
         message: string;

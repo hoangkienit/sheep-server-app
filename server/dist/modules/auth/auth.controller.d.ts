@@ -15,6 +15,8 @@ export declare class AuthController {
             isActive: boolean;
             address: string[];
         };
+        accessToken: string;
+        refreshToken: string;
     }>;
     register(registerPayload: RegisterPayloadDto): Promise<{
         message: string;

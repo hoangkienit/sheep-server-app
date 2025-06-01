@@ -18,10 +18,16 @@ const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./../user/entities/user.entity");
 const typeorm_2 = require("@nestjs/typeorm");
 const bcrypt = require("bcrypt");
+const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
     userRepository;
-    constructor(userRepository) {
+    configService;
+    jwtService;
+    constructor(userRepository, configService, jwtService) {
         this.userRepository = userRepository;
+        this.configService = configService;
+        this.jwtService = jwtService;
     }
     async login(loginPayload) {
         const { username, password } = loginPayload;
@@ -36,9 +42,20 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException('Invalid credentials');
         }
         const { password: _, ...userWithoutPassword } = user;
+        const payload = { userId: user.id, username: user.username };
+        const accessToken = this.jwtService.sign(payload, {
+            secret: this.configService.get('JWT_ACCESS_SECRET'),
+            expiresIn: this.configService.get('JWT_ACCESS_EXPIRES_IN')
+        });
+        const refreshToken = this.jwtService.sign(payload, {
+            secret: this.configService.get('JWT_REFRESH_SECRET'),
+            expiresIn: this.configService.get('JWT_REFRESH_EXPIRES_IN')
+        });
         return {
             message: "Login successful",
-            user: userWithoutPassword
+            user: userWithoutPassword,
+            accessToken: accessToken,
+            refreshToken: refreshToken
         };
     }
     async register(registerPayload) {
@@ -80,6 +97,8 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_2.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_1.Repository])
+    __metadata("design:paramtypes", [typeorm_1.Repository,
+        config_1.ConfigService,
+        jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
