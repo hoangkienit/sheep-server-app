@@ -1,4 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class UserService {}
+export class UserService {
+    constructor(
+
+    ) { }
+    
+    async getUser() {
+        return {
+            message: "Hello user"
+        };
+    }
+}

@@ -29,7 +29,9 @@ let AuthController = class AuthController {
         const response = await this.authService.login(loginPayload);
         return {
             message: response.message,
-            user: response.user
+            user: response.user,
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken
         };
     }
     async register(registerPayload) {
