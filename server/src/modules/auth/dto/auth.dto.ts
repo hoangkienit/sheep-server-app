@@ -38,7 +38,4 @@ export class RegisterPayloadDto {
     @MinLength(10)
     @MaxLength(10)
     phone: string;
-
-    @IsArray()
-    address?: string[];
 }

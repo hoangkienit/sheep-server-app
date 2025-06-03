@@ -1,7 +1,6 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { LoginPayloadDto, RegisterPayloadDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
-import { access } from 'fs';
 
 @Controller('auth')
 export class AuthController {
@@ -35,5 +34,11 @@ export class AuthController {
         return {
             message: response.message
         }
+    }
+
+    @Post('logout')
+    @HttpCode(200)
+    async logout() {
+        
     }
 }

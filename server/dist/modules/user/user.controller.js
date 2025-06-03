@@ -15,30 +15,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
-const passport_1 = require("@nestjs/passport");
 let UserController = class UserController {
     userService;
     constructor(userService) {
         this.userService = userService;
     }
-    async getUser(req) {
-        console.log("Call api from: ", req.user);
-        const response = await this.userService.getUser();
+    async getUserProfile(userId) {
+        const response = await this.userService.getUserProfile(userId);
         return {
-            message: response.message
+            message: "Get user profile success",
+            user: response
         };
     }
 };
 exports.UserController = UserController;
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Get)('/hello'),
+    (0, common_1.Get)('/profile/:userId'),
     (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUser", null);
+], UserController.prototype, "getUserProfile", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
