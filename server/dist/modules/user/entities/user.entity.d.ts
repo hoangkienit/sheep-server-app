@@ -1,3 +1,4 @@
+import { Address } from './address.entity';
 export declare class User {
     id: number;
     fullName: string;
@@ -6,5 +7,5 @@ export declare class User {
     email: string;
     isActive: boolean;
     password: string;
-    address: string[];
+    addresses: Address[];
 }

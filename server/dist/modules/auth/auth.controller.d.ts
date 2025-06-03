@@ -13,7 +13,7 @@ export declare class AuthController {
             phone: string;
             email: string;
             isActive: boolean;
-            address: string[];
+            addresses: import("../user/entities/address.entity").Address[];
         };
         accessToken: string;
         refreshToken: string;
@@ -21,4 +21,5 @@ export declare class AuthController {
     register(registerPayload: RegisterPayloadDto): Promise<{
         message: string;
     }>;
+    logout(): Promise<void>;
 }

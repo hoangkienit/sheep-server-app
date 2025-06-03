@@ -58,8 +58,7 @@ export class AuthService {
             username,
             email,
             phone,
-            password,
-            address
+            password
         } = registerPayload;
 
         if (await this.findByUsername(username)) {
@@ -82,7 +81,7 @@ export class AuthService {
             phone: phone,
             email: email,
             password: hashedPassword,
-            address: address
+            addresses: []
         });
 
         await this.userRepository.save(newUser);

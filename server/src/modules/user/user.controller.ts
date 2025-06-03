@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -8,15 +8,15 @@ export class UserController {
         private userService: UserService
     ) { }
     
-    @UseGuards(AuthGuard('jwt'))
-    @Get('/hello')
+    // @UseGuards(AuthGuard('jwt'))
+    @Get('/profile/:userId')
     @HttpCode(200)
-    async getUser(@Req() req) {
-        console.log("Call api from: ", req.user)
-        const response = await this.userService.getUser();
+    async getUserProfile(@Param('userId') userId: number) {
+        const response = await this.userService.getUserProfile(userId);
 
         return {
-            message: response.message
+            message: "Get user profile success",
+            user: response
         }
     }
 }

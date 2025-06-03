@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Address } from './address.entity';
 
-@Entity({ name: "Users"})
+@Entity({ name: "Users" })
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
@@ -8,7 +9,7 @@ export class User {
     @Column({ type: 'text' })
     fullName: string;
 
-    @Column({ unique: true})
+    @Column({ unique: true })
     username: string;
 
     @Column({ unique: true })
@@ -17,12 +18,12 @@ export class User {
     @Column({ unique: true })
     email: string;
 
-    @Column({ type: 'boolean', default: true})
+    @Column({ type: 'boolean', default: true })
     isActive: boolean;
 
-    @Column({ type: 'text'})
+    @Column({ type: 'text' })
     password: string;
 
-    @Column({ type: 'text', array: true })
-    address: string[];
+    @OneToMany(() => Address, (address) => address.user, { cascade: true, eager: true })
+    addresses: Address[];
 }

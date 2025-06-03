@@ -17,7 +17,7 @@ export declare class AuthService {
             phone: string;
             email: string;
             isActive: boolean;
-            address: string[];
+            addresses: import("../user/entities/address.entity").Address[];
         };
         accessToken: string;
         refreshToken: string;

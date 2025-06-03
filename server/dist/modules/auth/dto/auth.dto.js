@@ -35,7 +35,6 @@ class RegisterPayloadDto {
     email;
     password;
     phone;
-    address;
 }
 exports.RegisterPayloadDto = RegisterPayloadDto;
 __decorate([
@@ -68,8 +67,4 @@ __decorate([
     (0, class_validator_1.MaxLength)(10),
     __metadata("design:type", String)
 ], RegisterPayloadDto.prototype, "phone", void 0);
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    __metadata("design:type", Array)
-], RegisterPayloadDto.prototype, "address", void 0);
 //# sourceMappingURL=auth.dto.js.map

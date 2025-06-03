@@ -2,7 +2,8 @@ import { UserService } from './user.service';
 export declare class UserController {
     private userService;
     constructor(userService: UserService);
-    getUser(req: any): Promise<{
+    getUserProfile(userId: number): Promise<{
         message: string;
+        user: import("./entities/user.entity").User;
     }>;
 }

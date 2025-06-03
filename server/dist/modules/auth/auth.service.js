@@ -59,7 +59,7 @@ let AuthService = class AuthService {
         };
     }
     async register(registerPayload) {
-        const { fullName, username, email, phone, password, address } = registerPayload;
+        const { fullName, username, email, phone, password } = registerPayload;
         if (await this.findByUsername(username)) {
             throw new common_1.BadRequestException('Username already exists');
         }
@@ -76,7 +76,7 @@ let AuthService = class AuthService {
             phone: phone,
             email: email,
             password: hashedPassword,
-            address: address
+            addresses: []
         });
         await this.userRepository.save(newUser);
         return {
